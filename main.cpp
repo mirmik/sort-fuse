@@ -179,6 +179,13 @@ static int hello_open(const char *path, struct fuse_file_info *fi)
         return 0;
 }
 
+static int hello_release(const char *path, struct fuse_file_info *fi)
+{
+        TRACE();
+        close(fi->fh);
+        return 0;
+}
+
 static int hello_read(const char *path, char *buf, size_t size, off_t offset,
                       struct fuse_file_info *fi)
 {
@@ -212,6 +219,7 @@ int main(int argc, char *argv[])
         hello_oper.readdir        = hello_readdir;
         hello_oper.opendir        = hello_opendir;
         hello_oper.open           = hello_open;
+        hello_oper.release          = hello_release;
         hello_oper.read           = hello_read;
 
         int ret;
